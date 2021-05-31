@@ -53,10 +53,12 @@ function at {
   at "2021-05-31 13:37"; git commit -m "Create files"
 
 
+  # CHANGE, MOVE, COPY AND REMOVE FILES
   echo "zab" > foo/baz.txt
-  git mv qux/quux.txt qux/garply/quux.txt
-  git status
+  cp foo/bar.txt foo/rab.txt
   git add foo
+  git mv qux/quux.txt qux/garply/quux.txt
+  git rm qux/garply/waldo/fred.txt
 
   at "2021-06-01 13:33:37"; git commit -m "Update stuff"
 
