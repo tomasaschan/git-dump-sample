@@ -2,7 +2,9 @@
 
 import datetime
 import json
+import sys
 
+import dateutil.parser
 from pygit2 import (
     Repository,
     GIT_DIFF_REVERSE,
@@ -94,6 +96,16 @@ def commit(commit):
     return sorted(_commit())
 
 
-for c in sample_repo.walk(sample_repo.head.target):
-    for line in commit(c):
-        print(line)
+def dump(since=None):
+    for c in sample_repo.walk(sample_repo.head.target):
+        if since and since <= datetime.datetime.fromtimestamp(c.commit_time):
+            for line in commit(c):
+                print(line)
+
+
+if __name__ == "__main__":
+    since = None
+    if sys.argv[1:]:
+        since = dateutil.parser.parse(sys.argv[1])
+
+    dump(since)
