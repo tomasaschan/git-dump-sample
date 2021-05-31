@@ -12,6 +12,11 @@ fi
 rm -rf sample-repo
 mkdir sample-repo
 
+function at {
+  export GIT_COMMITTER_DATE="$1"
+  export GIT_AUTHOR_DATE="$1"
+}
+
 ( # cd into the sample repo in a subshell, to ensure we don't lose our working dir
   cd sample-repo
   git init
@@ -42,14 +47,14 @@ mkdir sample-repo
 
   git add foo qux thud.txt
 
-  faketime "2021-05-31 13:33:37" git commit -m "Initial commit"
+  at "2021-05-31 13:33:37"; git commit -m "Initial commit"
 
   echo "zab" > foo/baz.txt
   git mv qux/quux.txt qux/garply/quux.txt
   git status
   git add foo
 
-  faketime "2021-06-01 13:33:37" git commit -m "Update stuff"
+  at "2021-06-01 13:33:37"; git commit -m "Update stuff"
 
   git log
 )

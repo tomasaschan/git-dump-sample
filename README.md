@@ -8,11 +8,6 @@ There is an [RFC for the format](https://docs.google.com/document/d/1ltvyC14Kt4-
 
 ## Setting up your environment
 
-The Bash script that generates commits currently depends on [faketime][faketime] to ensure hashes are
-reproducible; this requirement might be removed in the future.
-
-[faketime]: http://manpages.ubuntu.com/manpages/trusty/man1/faketime.1.html
-
 The Python script depends on some Python packages, which can be installed with `pip`:
 
 ```
