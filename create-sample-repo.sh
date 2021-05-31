@@ -32,6 +32,13 @@ function at {
   # │  │  ├─ fred.txt
   # thud.txt
 
+  git config --local user.name Me
+  git config --local user.email me@spotify.com
+
+  # COMMIT WITHOUT PARENTS
+  at "2021-05-31 13:33:37"; git commit --allow-empty -m "Initial commit"
+
+  # CREATE A FEW FILES
   mkdir foo
   echo "bar" > foo/bar.txt
   echo "baz" > foo/baz.txt
@@ -41,13 +48,10 @@ function at {
   echo "fred" > qux/garply/waldo/fred.txt
 
   echo "thud" > thud.txt
-  
-  git config --local user.name Me
-  git config --local user.email me@spotify.com
-
   git add foo qux thud.txt
 
-  at "2021-05-31 13:33:37"; git commit -m "Initial commit"
+  at "2021-05-31 13:37"; git commit -m "Create files"
+
 
   echo "zab" > foo/baz.txt
   git mv qux/quux.txt qux/garply/quux.txt
