@@ -44,5 +44,12 @@ mkdir sample-repo
 
   faketime "2021-05-31 13:33:37" git commit -m "Initial commit"
 
+  echo "zab" > foo/baz.txt
+  git mv qux/quux.txt qux/garply/quux.txt
+  git status
+  git add foo
+
+  faketime "2021-06-01 13:33:37" git commit -m "Update stuff"
+
   git log
 )
