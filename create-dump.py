@@ -7,11 +7,11 @@ import sys
 import dateutil.parser
 from pygit2 import (
     Repository,
-    GIT_DIFF_REVERSE,
     GIT_DELTA_ADDED,
     GIT_DELTA_DELETED,
     GIT_DELTA_MODIFIED,
     GIT_DELTA_RENAMED,
+    GIT_DIFF_REVERSE,
 )
 
 sample_repo = Repository("./sample-repo/.git")
