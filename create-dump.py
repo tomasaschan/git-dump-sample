@@ -16,7 +16,9 @@ from pygit2 import (
 
 sample_repo = Repository("./sample-repo/.git")
 
-emitted_objects = set()
+emitted_commits = set()
+emitted_trees = set()
+emitted_blobs = set()
 blobs_to_emit = set()
 
 
@@ -37,19 +39,19 @@ def signature_timestamp(signature):
 
 
 def blob(b):
-    if b.id in emitted_objects or b.id not in blobs_to_emit:
+    if b.id in emitted_blobs or b.id not in blobs_to_emit:
         return
 
-    emitted_objects.add(b.id)
+    emitted_blobs.add(b.id)
 
     yield f"blob {b.id} {json.dumps(b.data.decode('utf-8'))}"
 
 
 def tree(t):
-    if t.id in emitted_objects:
+    if t.id in emitted_trees:
         return
+    emitted_trees.add(t.id)
 
-    emitted_objects.add(t.id)
     for item in t:
         yield f"tree {t.id} {item.type_str} {item.id}"
 
@@ -88,10 +90,10 @@ def diff(commit):
 
 def commit(commit):
     def _commit():
-        if commit.id in emitted_objects:
+        if commit.id in emitted_commits:
             return
 
-        emitted_objects.add(commit.id)
+        emitted_commits.add(commit.id)
 
         yield f'commit {commit.id} author "{name_email(commit.author)}" {signature_timestamp(commit.author)}'
         yield f'commit {commit.id} committer "{name_email(commit.committer)}" {signature_timestamp(commit.committer)}'
