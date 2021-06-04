@@ -53,7 +53,7 @@ def tree(t):
     emitted_trees.add(t.id)
 
     for item in t:
-        yield f"tree {t.id} {item.type_str} {item.id}"
+        yield f"tree {t.id} {item.type_str} {item.id} {item.name} {item.filemode:06o}"
 
         if item.type_str == "tree":
             yield from tree(item)
