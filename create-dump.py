@@ -31,14 +31,13 @@ def name_email(signature):
 
 def timestamp(unix_time, offset):
     return datetime.datetime.fromtimestamp(
-        unix_time, tz=datetime.timezone(datetime.timedelta(minutes=offset))
+        unix_time,
+        tz=datetime.timezone(datetime.timedelta(minutes=offset)),
     )
 
 
 def signature_timestamp(signature):
-    return (
-        timestamp(signature.time, signature.offset).isoformat().replace("+00:00", "Z")
-    )
+    return timestamp(signature.time, signature.offset).isoformat()
 
 
 def blob(b):
