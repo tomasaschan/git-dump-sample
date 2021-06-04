@@ -117,7 +117,7 @@ def commit(commit):
 
 def dump(since=None):
     for c in sample_repo.walk(sample_repo.head.target):
-        if since and since <= timestamp(c.commit_time, c.commit_time_offset):
+        if not since or since <= timestamp(c.commit_time, c.commit_time_offset):
             for line in commit(c):
                 print(line)
 
