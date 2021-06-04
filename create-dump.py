@@ -52,6 +52,8 @@ def tree(t):
         return
     emitted_trees.add(t.id)
 
+    yield f"tree {t.id} {len(t)}"
+
     for item in t:
         yield f"tree {t.id} {item.type_str} {item.id} {item.name} {item.filemode:06o}"
 
