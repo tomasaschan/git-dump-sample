@@ -13,6 +13,8 @@ from pygit2 import (
     GIT_DELTA_MODIFIED,
     GIT_DELTA_RENAMED,
     GIT_DIFF_REVERSE,
+    GIT_SORT_REVERSE,
+    GIT_SORT_TOPOLOGICAL,
 )
 
 sample_repo = Repository("./sample-repo/.git")
@@ -135,7 +137,10 @@ def dump(since=None):
     for r in refs(sample_repo.references):
         print(r)
 
-    for c in sample_repo.walk(sample_repo.head.target):
+    for c in sample_repo.walk(
+        sample_repo.head.target,
+        GIT_SORT_TOPOLOGICAL | GIT_SORT_REVERSE,
+    ):
         if not since or since <= timestamp(c.commit_time, c.commit_time_offset):
             for line in commit(c):
                 print(line)
