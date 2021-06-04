@@ -2,6 +2,7 @@
 
 import datetime
 import json
+import re
 import sys
 
 import dateutil.parser
@@ -115,7 +116,25 @@ def commit(commit):
     yield from sorted(tree(commit.tree))
 
 
+REF_RX = re.compile(r"^refs/(?P<type>head|tag)s/(?P<name>[a-z0-9\-\.]+)$")
+
+
+def refs(references):
+    for r in references:
+        m = REF_RX.match(r)
+        if not m:
+            continue
+
+        type = "branch" if m.group("type") == "head" else "tag"
+        name = m.group("name")
+
+        yield f"ref {references.get(r).target} {type} {name} <repo id/nwo> <push-date>"
+
+
 def dump(since=None):
+    for r in refs(sample_repo.references):
+        print(r)
+
     for c in sample_repo.walk(sample_repo.head.target):
         if not since or since <= timestamp(c.commit_time, c.commit_time_offset):
             for line in commit(c):
