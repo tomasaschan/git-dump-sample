@@ -99,23 +99,20 @@ def diff(commit):
 
 
 def commit(commit):
-    def _commit():
-        if commit.id in emitted_commits:
-            return
+    if commit.id in emitted_commits:
+        return
 
-        emitted_commits.add(commit.id)
+    emitted_commits.add(commit.id)
 
-        yield f'commit {commit.id} author "{name_email(commit.author)}" {signature_timestamp(commit.author)}'
-        yield f'commit {commit.id} committer "{name_email(commit.committer)}" {signature_timestamp(commit.committer)}'
-        yield f"commit {commit.id} message {json.dumps(commit.message.strip())}"
-        yield f"commit {commit.id} {' '.join(('parents', *(str(id) for id in commit.parent_ids)))}"
-        yield f"commit {commit.id} tree {commit.tree_id}"
+    yield f'commit {commit.id} author "{name_email(commit.author)}" {signature_timestamp(commit.author)}'
+    yield f'commit {commit.id} committer "{name_email(commit.committer)}" {signature_timestamp(commit.committer)}'
+    yield f"commit {commit.id} message {json.dumps(commit.message.strip())}"
+    yield f"commit {commit.id} {' '.join(('parents', *(str(id) for id in commit.parent_ids)))}"
+    yield f"commit {commit.id} tree {commit.tree_id}"
 
-        yield from diff(commit)
+    yield from diff(commit)
 
-        yield from tree(commit.tree)
-
-    return sorted(_commit())
+    yield from sorted(tree(commit.tree))
 
 
 def dump(since=None):
