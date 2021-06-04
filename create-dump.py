@@ -63,29 +63,37 @@ def tree(t):
 
 
 def diff(commit):
-    diff = (
-        commit.tree.diff_to_tree(commit.parents[0].tree, GIT_DIFF_REVERSE)
-        if commit.parents
-        else commit.tree.diff_to_tree(flags=GIT_DIFF_REVERSE)
-    )
+    if len(commit.parents) <= 1:
+        diff = (
+            commit.tree.diff_to_tree(commit.parents[0].tree, flags=GIT_DIFF_REVERSE)
+            if commit.parents
+            else commit.tree.diff_to_tree(flags=GIT_DIFF_REVERSE)
+        )
 
-    diff.find_similar()
+        diff.find_similar()
 
-    for patch in diff:
-        if patch.delta.status == GIT_DELTA_ADDED:
-            yield f"commit {commit.id} filecreate {patch.delta.new_file.path} {patch.delta.new_file.id}"
-            blobs_to_emit.add(patch.delta.new_file.id)
-        elif patch.delta.status == GIT_DELTA_DELETED:
-            yield f"commit {commit.id} fileremove {patch.delta.old_file.path}"
-        elif patch.delta.status == GIT_DELTA_MODIFIED:
-            yield f"commit {commit.id} filemodify {patch.delta.new_file.path} {patch.delta.new_file.id}"
-            blobs_to_emit.add(patch.delta.new_file.id)
-        elif patch.delta.status == GIT_DELTA_RENAMED:
-            yield f"commit {commit.id} filerename {patch.delta.old_file.path} {patch.delta.new_file.path} {patch.delta.new_file.id}"
-            if patch.delta.old_file.id != patch.delta.new_file.id:
+        for patch in diff:
+            if patch.delta.status == GIT_DELTA_ADDED:
+                yield f"commit {commit.id} filecreate {patch.delta.new_file.path} {patch.delta.new_file.id}"
                 blobs_to_emit.add(patch.delta.new_file.id)
-        else:
-            raise NotImplementedError(f"unsupported delta status: {patch.delta.status}")
+            elif patch.delta.status == GIT_DELTA_DELETED:
+                yield f"commit {commit.id} fileremove {patch.delta.old_file.path}"
+            elif patch.delta.status == GIT_DELTA_MODIFIED:
+                yield f"commit {commit.id} filemodify {patch.delta.new_file.path} {patch.delta.new_file.id}"
+                blobs_to_emit.add(patch.delta.new_file.id)
+            elif patch.delta.status == GIT_DELTA_RENAMED:
+                yield f"commit {commit.id} filerename {patch.delta.old_file.path} {patch.delta.new_file.path} {patch.delta.new_file.id}"
+                if patch.delta.old_file.id != patch.delta.new_file.id:
+                    blobs_to_emit.add(patch.delta.new_file.id)
+            else:
+                raise NotImplementedError(
+                    f"unsupported delta status: {patch.delta.status}"
+                )
+    else:
+        print(
+            f"Skipping diff view (file* items) for merge commit {commit.id}",
+            file=sys.stderr,
+        )
 
 
 def commit(commit):
