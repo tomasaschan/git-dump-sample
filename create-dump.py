@@ -57,12 +57,13 @@ def tree(t):
     yield f"tree {t.id} {len(t)}"
 
     for item in t:
-        yield f"tree {t.id} {item.type_str} {item.id} {item.name} {item.filemode:06o}"
-
+        tree_data = f"{t.id} {item.type_str} {item.id} {item.name} {item.filemode:06o}"
         if item.type_str == "tree":
+            yield f"tree {tree_data}"
             yield from tree(item)
 
         if item.type_str == "blob":
+            yield f"tree {tree_data} {item.size}"
             yield from blob(item)
 
 
