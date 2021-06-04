@@ -6,6 +6,9 @@ set of dump files.
 
 There is an [RFC for the format](https://docs.google.com/document/d/1ltvyC14Kt4-_iWGqv1Bpc5PWQAWFynAY7n6cLqGxHJE/edit#) which showcases the simpler cases. For a fuller description, run the scripts in this repo to generate the sample repository and its dump file.
 
+**NOTE:** In order to not over-engineer things, this script keeps things simple. Not all features of
+the above RFC are exposed in this example!
+
 ## Setting up your environment
 
 The Python script depends on some Python packages, which can be installed with `pip`:
