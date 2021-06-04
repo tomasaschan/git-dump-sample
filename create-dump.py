@@ -112,6 +112,8 @@ def commit(commit):
     yield f"commit {commit.id} message {json.dumps(commit.message.strip())}"
     yield f"commit {commit.id} {' '.join(('parents', *(str(id) for id in commit.parent_ids)))}"
     yield f"commit {commit.id} tree {commit.tree_id}"
+    yield f"commit {commit.id} fork <repo id/nwo>"
+    yield f"commit {commit.id} pushed {signature_timestamp(commit.committer)}"
 
     yield from diff(commit)
 
