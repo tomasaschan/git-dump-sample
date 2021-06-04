@@ -62,5 +62,29 @@ function at {
 
   at "2021-06-01 13:33:37"; git commit -m "Update stuff"
 
-  git log
+  # CREATE A TAG
+  at "2021-06-01 13:33:37"; git tag 'v0.1'
+
+  # CHANGE JUST A SMALL SUBTREE
+  echo "duht" > thud.txt
+  git add thud.txt
+
+  at "2021-06-02 13:33:37"; git commit -m "Update small subtree"
+
+  # CONFLICT-LESS MERGE
+  git switch -c feature
+  mkdir -p qux/garply/waldo
+  echo "fred ii" > qux/garply/waldo/fred.txt
+  git add qux/garply/waldo/fred.txt
+  git commit -m "Rescurrect Fred"
+
+  git switch master
+
+  echo "beer" > foo/bar.txt
+  git add foo/bar.txt
+  git commit -m "Make it a proper bar"
+
+  git merge feature --no-ff --no-edit
+
+  git log --oneline --decorate --graph --all
 )
